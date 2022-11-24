@@ -7,5 +7,5 @@ import com.randomcompany.ppmtool.models.Project;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
-	
+	Project findByProjectIdentifier(String projectId);
 }

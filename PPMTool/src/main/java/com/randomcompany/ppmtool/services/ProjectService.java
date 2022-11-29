@@ -1,5 +1,7 @@
 package com.randomcompany.ppmtool.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,19 @@ public class ProjectService {
 			throw new ProjectIdException("The project identifier '" + projectId + "' does not exist");
 		}
 		return project;
+	}
+	
+	public List<Project> findAllProjects() {
+		return projectRepository.findAll();
+	}
+	
+	public void deleteProjectByIdentifier(String projectId) {
+		Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
+		
+		if(project == null) {
+			throw new ProjectIdException("Cannot delete project with identifier '" + projectId + "' it does not exist");
+		}
+		projectRepository.delete(project);
 	}
 	
 }

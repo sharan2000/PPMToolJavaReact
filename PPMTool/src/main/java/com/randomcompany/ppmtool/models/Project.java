@@ -30,7 +30,7 @@ public class Project {
 	@Column(unique = true, updatable = false)
 	private String projectIdentifier;
 	
-	@NotBlank(message = "description is required")
+	@NotBlank(message = "project description is required")
 	private String description;
 	
 	@JsonFormat(pattern = "yyyy-mm-dd")

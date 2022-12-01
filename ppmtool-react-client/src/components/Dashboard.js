@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ProjectItem from "./project/ProjectItem";
 import { Link } from "react-router-dom";
+import { getAllProjects } from "../actions/ProjectActions";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-const Dashboard = () => {
+const Dashboard = ({ projectsState: { projects }, getAllProjects }) => {
+  useEffect(() => {
+    getAllProjects();
+  }, []);
+
   return (
     <div className='projects'>
       <div className='container'>
@@ -26,4 +33,12 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+Dashboard.propTypes = {
+  getAllProjects: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  projectsState: state.projects,
+});
+
+export default connect(mapStateToProps, { getAllProjects })(Dashboard);

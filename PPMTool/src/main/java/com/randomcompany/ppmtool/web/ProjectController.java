@@ -63,16 +63,5 @@ public class ProjectController {
 		projectService.deleteProjectByIdentifier(projectId);
 		return new ResponseEntity<String>("Project with project identifier '" + projectId + "' deleted", HttpStatus.OK);
 	}
-	
-	@PutMapping(path = "")
-	public ResponseEntity<?> updateProjectByIdentifier(@Valid @RequestBody Project project, BindingResult result) {
-		ResponseEntity<?> errorsMap = errorMapValidationService.mapValidate(result);
-		if(errorsMap != null) {
-			return errorsMap;
-		}
-		
-		Project resProject = projectService.saveOrUpdateProject(project);
-		return new ResponseEntity<Project>(resProject, HttpStatus.OK); 
-	}
-	
+
 }

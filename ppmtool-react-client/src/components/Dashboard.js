@@ -22,10 +22,10 @@ const Dashboard = ({ projectsState: { projects }, getAllProjects }) => {
             </Link>
             <br />
             <hr />
-
-            <ProjectItem />
-            <ProjectItem />
-            <ProjectItem />
+            {projects.length > 0 &&
+              projects.map((project) => (
+                <ProjectItem project={project} key={project.id} />
+              ))}
           </div>
         </div>
       </div>
@@ -35,6 +35,7 @@ const Dashboard = ({ projectsState: { projects }, getAllProjects }) => {
 
 Dashboard.propTypes = {
   getAllProjects: PropTypes.func.isRequired,
+  projectsState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({

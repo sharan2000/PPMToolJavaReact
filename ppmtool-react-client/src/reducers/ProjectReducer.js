@@ -1,29 +1,17 @@
 import {
-  CLEAR_ERRORS,
-  GET_ERRORS,
   GET_PROJECTS,
   GET_PROJECT,
   DELETE_PROJECT,
+  CLEAR_PROJECT,
 } from "../actions/types";
 
 const initialState = {
   projects: [],
   project: {},
-  errors: {},
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case GET_ERRORS:
-      return {
-        ...state,
-        errors: action.payload,
-      };
-    case CLEAR_ERRORS:
-      return {
-        ...state,
-        errors: {},
-      };
     case GET_PROJECTS:
       return {
         ...state,
@@ -33,6 +21,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         project: action.payload,
+      };
+    case CLEAR_PROJECT:
+      return {
+        ...state,
+        project: {},
       };
     case DELETE_PROJECT:
       return {

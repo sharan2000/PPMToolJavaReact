@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { createProject } from "../../actions/ProjectActions";
 
+import { clearErrors } from "../../actions/ErrorActions";
+
 import classnames from "classnames";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const AddProject = ({ projects: { errors }, createProject }) => {
+const AddProject = ({ errors, createProject, clearErrors }) => {
   const [project, setProject] = useState({
     projectName: "",
     projectIdentifier: "",
@@ -20,6 +22,16 @@ const AddProject = ({ projects: { errors }, createProject }) => {
 
   const { projectName, projectIdentifier, description, startDate, endDate } =
     project;
+
+  const [localErrors, setLocalErrors] = useState({});
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      setLocalErrors({
+        ...errors,
+      });
+      clearErrors();
+    }
+  }, [errors]);
 
   const onChange = (e) => {
     setProject({ ...project, [e.target.name]: e.target.value });
@@ -35,55 +47,57 @@ const AddProject = ({ projects: { errors }, createProject }) => {
       <div className='container'>
         <div className='row'>
           <div className='col-md-8 m-auto'>
-            <h5 className='display-4 text-center'>
-              Create / Edit Project form
-            </h5>
+            <h5 className='display-4 text-center'>Create Project form</h5>
             <hr />
             <form onSubmit={onSubmit}>
               <div className='form-group'>
                 <input
                   type='text'
                   className={classnames("form-control form-control-lg ", {
-                    "is-invalid": errors.projectName,
+                    "is-invalid": localErrors.projectName,
                   })}
                   placeholder='Project Name'
                   name='projectName'
                   value={projectName}
                   onChange={onChange}
                 />
-                {errors.projectName && (
-                  <div className='invalid-feedback'>{errors.projectName}</div>
+                {localErrors.projectName && (
+                  <div className='invalid-feedback'>
+                    {localErrors.projectName}
+                  </div>
                 )}
               </div>
               <div className='form-group'>
                 <input
                   type='text'
                   className={classnames("form-control form-control-lg ", {
-                    "is-invalid": errors.projectIdentifier,
+                    "is-invalid": localErrors.projectIdentifier,
                   })}
                   placeholder='Unique Project ID'
                   name='projectIdentifier'
                   value={projectIdentifier}
                   onChange={onChange}
                 />
-                {errors.projectIdentifier && (
+                {localErrors.projectIdentifier && (
                   <div className='invalid-feedback'>
-                    {errors.projectIdentifier}
+                    {localErrors.projectIdentifier}
                   </div>
                 )}
               </div>
               <div className='form-group'>
                 <textarea
                   className={classnames("form-control form-control-lg ", {
-                    "is-invalid": errors.description,
+                    "is-invalid": localErrors.description,
                   })}
                   placeholder='Project Description'
                   name='description'
                   value={description}
                   onChange={onChange}
                 ></textarea>
-                {errors.description && (
-                  <div className='invalid-feedback'>{errors.description}</div>
+                {localErrors.description && (
+                  <div className='invalid-feedback'>
+                    {localErrors.description}
+                  </div>
                 )}
               </div>
               <h6>Start Date</h6>
@@ -118,10 +132,13 @@ const AddProject = ({ projects: { errors }, createProject }) => {
 
 AddProject.propTypes = {
   createProject: PropTypes.func.isRequired,
-  projects: PropTypes.object.isRequired,
+  clearErrors: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  projects: state.projects,
+  errors: state.errors,
 });
-export default connect(mapStateToProps, { createProject })(AddProject);
+export default connect(mapStateToProps, { createProject, clearErrors })(
+  AddProject
+);

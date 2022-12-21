@@ -24,13 +24,16 @@ const ProjectItem = ({ project, deleteProject }) => {
           </div>
           <div className='col-md-4 d-none d-lg-block'>
             <ul className='list-group'>
-              <a href='#' style={anchorcss}>
+              <Link
+                to={`/projectboard/${project.projectIdentifier}`}
+                style={anchorcss}
+              >
                 <li className='list-group-item board'>
                   <span>
                     <i className='fa fa-flag-checkered pr-1'></i>Project Board{" "}
                   </span>
                 </li>
-              </a>
+              </Link>
               <Link
                 to={`/updateproject/${project.projectIdentifier}`}
                 style={anchorcss}

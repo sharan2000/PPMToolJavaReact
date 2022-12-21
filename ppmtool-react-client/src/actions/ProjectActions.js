@@ -1,9 +1,9 @@
 import {
   GET_ERRORS,
-  CLEAR_ERRORS,
   GET_PROJECTS,
   GET_PROJECT,
   DELETE_PROJECT,
+  CLEAR_PROJECT,
 } from "./types";
 import axios from "axios";
 
@@ -11,9 +11,6 @@ export const createProject = (project, navigate) => {
   return async (dispatch) => {
     try {
       const res = await axios.post("/api/project", project);
-      dispatch({
-        type: CLEAR_ERRORS,
-      });
       navigate("/dashboard");
     } catch (error) {
       dispatch({
@@ -49,6 +46,14 @@ export const getProjectById = (projectId, navigate) => {
     } catch (error) {
       navigate("/dashboard");
     }
+  };
+};
+
+export const clearProject = () => {
+  return (dispatch) => {
+    dispatch({
+      type: CLEAR_PROJECT,
+    });
   };
 };
 

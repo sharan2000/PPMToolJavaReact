@@ -11,6 +11,8 @@ import com.randomcompany.ppmtool.models.Project;
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 	Project findByProjectIdentifier(String projectId);
 	
+	List<Project> findByProjectLeader(String projectLeader);
+	
 	@Override
 	List<Project> findAll();
 }

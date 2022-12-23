@@ -30,4 +30,9 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 		return new ResponseEntity<Object>(usernameAlreadyExistsResponse, HttpStatus.BAD_REQUEST);
 	}
 	
+	@ExceptionHandler
+	public final ResponseEntity<Object> handleProjectTaskRelatedException(ProjectTaskRelatedException exception,  WebRequest request) {
+		ProjectTaskRelatedExceptionResponse projectTaskRelatedExceptionResponse = new ProjectTaskRelatedExceptionResponse(exception.getMessage());
+		return new ResponseEntity<Object>(projectTaskRelatedExceptionResponse, HttpStatus.BAD_REQUEST);
+	}
 }

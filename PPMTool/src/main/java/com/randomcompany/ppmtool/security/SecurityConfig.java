@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.randomcompany.ppmtool.services.CustomUserDetailsService;
 
@@ -32,6 +33,11 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+	
+	@Bean
+	public JwtAuthenticationFilter jwtAuthenticationFilter() {
+		return new JwtAuthenticationFilter();
+	}
 	
 	/*
 	 We don't have to add our CustomUserDetailsService to the AuthenticationManagerBuilder. Since we are using
@@ -65,6 +71,8 @@ public class SecurityConfig {
 			).permitAll()
 			.antMatchers(SIGN_UP_URLS).permitAll()
 			.anyRequest().authenticated();
+		
+		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		
 		return http.build();
 	}

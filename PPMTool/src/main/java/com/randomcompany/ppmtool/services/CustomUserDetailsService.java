@@ -26,9 +26,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 	
 	@Transactional
 	public User loadUserById(Long Id) {
-		User user = userRepository.getReferenceById(Id);
+		User user = userRepository.getById(Id);
 		
 		if(user == null) throw new UsernameNotFoundException("username not found");
+		user.getUsername(); // should use the user object at least once or else throws 'org.hibernate.LazyInitializationException: could not initialize proxy [com.randomcompany.ppmtool.models.User#1] - no Session'. Don't know the cause for this strange behavior"
 		return user;
 	}
 

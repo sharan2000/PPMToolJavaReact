@@ -9,7 +9,7 @@ import com.randomcompany.ppmtool.models.ProjectTask;
 
 @Repository
 public interface ProjectTaskRepository extends JpaRepository<ProjectTask, Long>{
-	List<ProjectTask> findAllByProjectIdentifier(String projectIdentifier);
+	List<ProjectTask> findByProjectIdentifierOrderByPriority(String projectIdentifier);
 	
 	ProjectTask findByProjectSequence(String projectSequence);
 }

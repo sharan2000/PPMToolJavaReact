@@ -58,6 +58,13 @@ const ProjectBoard = ({
             {localErrors.projectNotFound}
           </div>
         );
+      } else if (localErrors.projectIdentifier) {
+        showAddButton = false;
+        return (
+          <div className='alert alert-danger text-center' role='alert'>
+            {localErrors.projectIdentifier}
+          </div>
+        );
       } else {
         return (
           <div className='alert alert-danger text-center' role='alert'>

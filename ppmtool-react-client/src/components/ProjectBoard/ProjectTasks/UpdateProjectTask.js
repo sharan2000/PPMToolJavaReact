@@ -9,9 +9,11 @@ import {
   updateProjectTask,
 } from "../../../actions/BacklogActions";
 import PropTypes from "prop-types";
+import Spinner from "../../layout/Spinner";
 
 const UpdateProjectTask = ({
   backlog: { projectTask },
+  utils,
   errors,
   clearErrors,
   getProjectTask,
@@ -75,82 +77,91 @@ const UpdateProjectTask = ({
 
   return (
     <div className='add-PBI'>
-      <div className='container'>
-        <div className='row'>
-          <div className='col-md-8 m-auto'>
-            <Link to={`/projectboard/${projuid}`} className='btn btn-light'>
-              Back to Project Board
-            </Link>
-            <h4 className='display-4 text-center'>Update Project Task</h4>
-            <p className='lead text-center'>{`Project ID : ${projuid} | Project Sequence : ${projseq}`}</p>
-            <form onSubmit={onSubmit}>
-              <div className='form-group'>
-                <input
-                  type='text'
-                  className={classnames("form-control form-control-lg ", {
-                    "is-invalid": localErrors.summary,
-                  })}
-                  name='summary'
-                  value={summary}
-                  placeholder='Project Task summary'
-                  onChange={onChange}
-                />
-                {localErrors.summary && (
-                  <div className='invalid-feedback'>{localErrors.summary}</div>
-                )}
-              </div>
-              <div className='form-group'>
-                <textarea
-                  className='form-control form-control-lg'
-                  placeholder='Acceptance Criteria'
-                  name='acceptanceCriteria'
-                  value={acceptanceCriteria}
-                  onChange={onChange}
-                ></textarea>
-              </div>
-              <h6>Due Date</h6>
-              <div className='form-group'>
-                <input
-                  type='date'
-                  className='form-control form-control-lg'
-                  name='dueDate'
-                  value={dueDate}
-                  onChange={onChange}
-                />
-              </div>
-              <div className='form-group'>
-                <select
-                  className='form-control form-control-lg'
-                  name='priority'
-                  value={priority}
-                  onChange={onChange}
-                >
-                  <option value={0}>Select Priority</option>
-                  <option value={1}>High</option>
-                  <option value={2}>Medium</option>
-                  <option value={3}>Low</option>
-                </select>
-              </div>
+      {utils.isLoading ? (
+        <Spinner />
+      ) : (
+        <div className='container'>
+          <div className='row'>
+            <div className='col-md-8 m-auto'>
+              <Link to={`/projectboard/${projuid}`} className='btn btn-light'>
+                Back to Project Board
+              </Link>
+              <h4 className='display-4 text-center'>Update Project Task</h4>
+              <p className='lead text-center'>{`Project ID : ${projuid} | Project Sequence : ${projseq}`}</p>
+              <form onSubmit={onSubmit}>
+                <div className='form-group'>
+                  <input
+                    type='text'
+                    className={classnames("form-control form-control-lg ", {
+                      "is-invalid": localErrors.summary,
+                    })}
+                    name='summary'
+                    value={summary}
+                    placeholder='Project Task summary'
+                    onChange={onChange}
+                  />
+                  {localErrors.summary && (
+                    <div className='invalid-feedback'>
+                      {localErrors.summary}
+                    </div>
+                  )}
+                </div>
+                <div className='form-group'>
+                  <textarea
+                    className='form-control form-control-lg'
+                    placeholder='Acceptance Criteria'
+                    name='acceptanceCriteria'
+                    value={acceptanceCriteria}
+                    onChange={onChange}
+                  ></textarea>
+                </div>
+                <h6>Due Date</h6>
+                <div className='form-group'>
+                  <input
+                    type='date'
+                    className='form-control form-control-lg'
+                    name='dueDate'
+                    value={dueDate}
+                    onChange={onChange}
+                  />
+                </div>
+                <div className='form-group'>
+                  <select
+                    className='form-control form-control-lg'
+                    name='priority'
+                    value={priority}
+                    onChange={onChange}
+                  >
+                    <option value={0}>Select Priority</option>
+                    <option value={1}>High</option>
+                    <option value={2}>Medium</option>
+                    <option value={3}>Low</option>
+                  </select>
+                </div>
 
-              <div className='form-group'>
-                <select
-                  className='form-control form-control-lg'
-                  name='status'
-                  value={status}
-                  onChange={onChange}
-                >
-                  <option value=''>Select Status</option>
-                  <option value='TO_DO'>TO DO</option>
-                  <option value='IN_PROGRESS'>IN PROGRESS</option>
-                  <option value='DONE'>DONE</option>
-                </select>
-              </div>
+                <div className='form-group'>
+                  <select
+                    className='form-control form-control-lg'
+                    name='status'
+                    value={status}
+                    onChange={onChange}
+                  >
+                    <option value=''>Select Status</option>
+                    <option value='TO_DO'>TO DO</option>
+                    <option value='IN_PROGRESS'>IN PROGRESS</option>
+                    <option value='DONE'>DONE</option>
+                  </select>
+                </div>
 
-              <input type='submit' className='btn btn-primary btn-block mt-4' />
-            </form>
+                <input
+                  type='submit'
+                  className='btn btn-primary btn-block mt-4'
+                />
+              </form>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
@@ -162,11 +173,13 @@ UpdateProjectTask.propTypes = {
   backlog: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   clearErrors: PropTypes.func.isRequired,
+  utils: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   backlog: state.backlog,
   errors: state.errors,
+  utils: state.utils,
 });
 
 export default connect(mapStateToProps, {

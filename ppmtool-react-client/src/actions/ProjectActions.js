@@ -4,6 +4,7 @@ import {
   GET_PROJECT,
   DELETE_PROJECT,
   CLEAR_PROJECT,
+  SET_LOADING,
 } from "./types";
 import axios from "axios";
 
@@ -24,6 +25,9 @@ export const createProject = (project, navigate) => {
 export const getAllProjects = () => {
   return async (dispatch) => {
     try {
+      dispatch({
+        type: SET_LOADING, //sets loading to true
+      });
       const res = await axios.get("/api/project/all");
       dispatch({
         type: GET_PROJECTS,
@@ -31,6 +35,10 @@ export const getAllProjects = () => {
       });
     } catch (error) {
       console.log(error);
+    } finally {
+      dispatch({
+        type: SET_LOADING, //sets loading to false
+      });
     }
   };
 };
@@ -38,6 +46,9 @@ export const getAllProjects = () => {
 export const getProjectById = (projectId, navigate) => {
   return async (dispatch) => {
     try {
+      dispatch({
+        type: SET_LOADING, //sets loading to true
+      });
       const res = await axios.get(`/api/project/${projectId}`);
       dispatch({
         type: GET_PROJECT,
@@ -45,6 +56,10 @@ export const getProjectById = (projectId, navigate) => {
       });
     } catch (error) {
       navigate("/dashboard");
+    } finally {
+      dispatch({
+        type: SET_LOADING, //sets loading to false
+      });
     }
   };
 };

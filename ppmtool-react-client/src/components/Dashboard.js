@@ -1,11 +1,13 @@
-import React, { useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 import ProjectItem from "./project/ProjectItem";
 import { Link } from "react-router-dom";
 import { getAllProjects } from "../actions/ProjectActions";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-const Dashboard = ({ projectsState: { projects }, getAllProjects }) => {
+import Spinner from "./layout/Spinner";
+
+const Dashboard = ({ projectsState: { projects }, utils, getAllProjects }) => {
   useEffect(() => {
     getAllProjects();
   }, []);
@@ -22,10 +24,16 @@ const Dashboard = ({ projectsState: { projects }, getAllProjects }) => {
             </Link>
             <br />
             <hr />
-            {projects.length > 0 &&
-              projects.map((project) => (
-                <ProjectItem project={project} key={project.id} />
-              ))}
+            {utils.isLoading ? (
+              <Spinner />
+            ) : (
+              <Fragment>
+                {projects.length > 0 &&
+                  projects.map((project) => (
+                    <ProjectItem project={project} key={project.id} />
+                  ))}
+              </Fragment>
+            )}
           </div>
         </div>
       </div>
@@ -36,10 +44,12 @@ const Dashboard = ({ projectsState: { projects }, getAllProjects }) => {
 Dashboard.propTypes = {
   getAllProjects: PropTypes.func.isRequired,
   projectsState: PropTypes.object.isRequired,
+  utils: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   projectsState: state.projects,
+  utils: state.utils,
 });
 
 export default connect(mapStateToProps, { getAllProjects })(Dashboard);

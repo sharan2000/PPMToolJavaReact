@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import classnames from "classnames";
 
+import Spinner from "../layout/Spinner";
+
 import { clearErrors } from "../../actions/ErrorActions";
 
 import {
@@ -16,6 +18,7 @@ import PropTypes from "prop-types";
 
 const UpdateProject = ({
   projectsState: { project },
+  utils,
   clearProject,
   errors,
   createProject,
@@ -79,86 +82,91 @@ const UpdateProject = ({
 
   return (
     <div>
-      <div className='project'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-md-8 m-auto'>
-              <h5 className='display-4 text-center'>Edit Project form</h5>
-              <hr />
-              <form onSubmit={onSubmit}>
-                <div className='form-group'>
-                  <input
-                    onChange={onChange}
-                    name='projectName'
-                    value={projectName}
-                    type='text'
-                    className={classnames("form-control form-control-lg ", {
-                      "is-invalid": localErrors.projectName,
-                    })}
-                    placeholder='Project Name'
-                  />
-                  {localErrors.projectName && (
-                    <div className='invalid-feedback'>
-                      {localErrors.projectName}
-                    </div>
-                  )}
-                </div>
-                <div className='form-group'>
-                  <input
-                    name='projectIdentifier'
-                    value={projectIdentifier}
-                    type='text'
-                    className='form-control form-control-lg'
-                    placeholder='Unique Project ID'
-                    disabled
-                  />
-                </div>
-                <div className='form-group'>
-                  <textarea
-                    onChange={onChange}
-                    name='description'
-                    value={description}
-                    className={classnames("form-control form-control-lg ", {
-                      "is-invalid": localErrors.description,
-                    })}
-                    placeholder='Project Description'
-                  ></textarea>
-                  {localErrors.description && (
-                    <div className='invalid-feedback'>
-                      {localErrors.description}
-                    </div>
-                  )}
-                </div>
-                <h6>Start Date</h6>
-                <div className='form-group'>
-                  <input
-                    onChange={onChange}
-                    name='startDate'
-                    value={startDate}
-                    type='date'
-                    className='form-control form-control-lg'
-                  />
-                </div>
-                <h6>Estimated End Date</h6>
-                <div className='form-group'>
-                  <input
-                    onChange={onChange}
-                    name='endDate'
-                    value={endDate}
-                    type='date'
-                    className='form-control form-control-lg'
-                  />
-                </div>
+      {utils.isLoading ? (
+        <Spinner />
+      ) : (
+        <div className='project'>
+          <div className='container'>
+            <div className='row'>
+              <div className='col-md-8 m-auto'>
+                <h5 className='display-4 text-center'>Edit Project form</h5>
+                <hr />
 
-                <input
-                  type='submit'
-                  className='btn btn-primary btn-block mt-4'
-                />
-              </form>
+                <form onSubmit={onSubmit}>
+                  <div className='form-group'>
+                    <input
+                      onChange={onChange}
+                      name='projectName'
+                      value={projectName}
+                      type='text'
+                      className={classnames("form-control form-control-lg ", {
+                        "is-invalid": localErrors.projectName,
+                      })}
+                      placeholder='Project Name'
+                    />
+                    {localErrors.projectName && (
+                      <div className='invalid-feedback'>
+                        {localErrors.projectName}
+                      </div>
+                    )}
+                  </div>
+                  <div className='form-group'>
+                    <input
+                      name='projectIdentifier'
+                      value={projectIdentifier}
+                      type='text'
+                      className='form-control form-control-lg'
+                      placeholder='Unique Project ID'
+                      disabled
+                    />
+                  </div>
+                  <div className='form-group'>
+                    <textarea
+                      onChange={onChange}
+                      name='description'
+                      value={description}
+                      className={classnames("form-control form-control-lg ", {
+                        "is-invalid": localErrors.description,
+                      })}
+                      placeholder='Project Description'
+                    ></textarea>
+                    {localErrors.description && (
+                      <div className='invalid-feedback'>
+                        {localErrors.description}
+                      </div>
+                    )}
+                  </div>
+                  <h6>Start Date</h6>
+                  <div className='form-group'>
+                    <input
+                      onChange={onChange}
+                      name='startDate'
+                      value={startDate}
+                      type='date'
+                      className='form-control form-control-lg'
+                    />
+                  </div>
+                  <h6>Estimated End Date</h6>
+                  <div className='form-group'>
+                    <input
+                      onChange={onChange}
+                      name='endDate'
+                      value={endDate}
+                      type='date'
+                      className='form-control form-control-lg'
+                    />
+                  </div>
+
+                  <input
+                    type='submit'
+                    className='btn btn-primary btn-block mt-4'
+                  />
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
@@ -170,11 +178,13 @@ UpdateProject.propTypes = {
   projectsState: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   clearProject: PropTypes.func.isRequired,
+  utils: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   projectsState: state.projects,
   errors: state.errors,
+  utils: state.utils,
 });
 
 export default connect(mapStateToProps, {

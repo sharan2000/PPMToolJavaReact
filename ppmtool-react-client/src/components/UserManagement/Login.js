@@ -5,7 +5,7 @@ import { login } from "../../actions/SecurityActions";
 import { clearErrors } from "../../actions/ErrorActions";
 import PropTypes from "prop-types";
 
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import classnames from "classnames";
 
 const Login = ({ security: { validToken }, errors, login, clearErrors }) => {
@@ -13,8 +13,6 @@ const Login = ({ security: { validToken }, errors, login, clearErrors }) => {
     username: "",
     password: "",
   });
-
-  const navigate = useNavigate();
 
   const [localErrors, setLocalErrors] = useState({});
 
@@ -26,12 +24,6 @@ const Login = ({ security: { validToken }, errors, login, clearErrors }) => {
       clearErrors();
     }
   }, [errors]);
-
-  useEffect(() => {
-    if (validToken) {
-      navigate("/dashboard");
-    }
-  }, [validToken]);
 
   const onChange = (e) => {
     setLoginRequestData({
@@ -45,6 +37,9 @@ const Login = ({ security: { validToken }, errors, login, clearErrors }) => {
     login(loginRequestData);
   };
 
+  if (validToken) {
+    return <Navigate to='/dashboard' />;
+  }
   return (
     <div className='login'>
       <div className='container'>

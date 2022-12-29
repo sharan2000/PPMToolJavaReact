@@ -7,6 +7,7 @@ import {
   GET_PROJECT_TASK,
   CLEAR_PROJECT_TASK,
   DELETE_PROJECT_TASK,
+  SET_LOADING,
 } from "./types";
 
 export const addProjectTask = (backlog_id, projectTask, navigate) => {
@@ -27,6 +28,9 @@ export const addProjectTask = (backlog_id, projectTask, navigate) => {
 export const getBacklog = (backlog_id, navigate) => {
   return async (dispatch) => {
     try {
+      dispatch({
+        type: SET_LOADING,
+      });
       const res = await axios.get(`/api/backlog/${backlog_id}`);
       dispatch({
         type: GET_BACKLOG,
@@ -36,6 +40,10 @@ export const getBacklog = (backlog_id, navigate) => {
       dispatch({
         type: GET_ERRORS,
         payload: error.response.data,
+      });
+    } finally {
+      dispatch({
+        type: SET_LOADING,
       });
     }
   };
@@ -52,6 +60,9 @@ export const clearBacklog = () => {
 export const getProjectTask = (backlog_id, projectSequence, navigate) => {
   return async (dispatch) => {
     try {
+      dispatch({
+        type: SET_LOADING,
+      });
       const res = await axios.get(
         `/api/backlog/${backlog_id}/${projectSequence}`
       );
@@ -61,6 +72,10 @@ export const getProjectTask = (backlog_id, projectSequence, navigate) => {
       });
     } catch (error) {
       navigate("/dashboard");
+    } finally {
+      dispatch({
+        type: SET_LOADING,
+      });
     }
   };
 };

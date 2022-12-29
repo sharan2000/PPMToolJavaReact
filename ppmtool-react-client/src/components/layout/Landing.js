@@ -1,17 +1,12 @@
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 const Landing = ({ security: { validToken } }) => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (validToken) {
-      navigate("/dashboard");
-    }
-  }, [validToken]);
-
+  if (validToken) {
+    return <Navigate to='/dashboard' />;
+  }
   return (
     <div className='landing'>
       <div className='light-overlay landing-inner text-dark'>

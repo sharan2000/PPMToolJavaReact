@@ -4,12 +4,13 @@ import Backlog from "./Backlog";
 import { getBacklog, clearBacklog } from "../../actions/BacklogActions";
 import { connect } from "react-redux";
 import { clearErrors } from "../../actions/ErrorActions";
-
+import Spinner from "../layout/Spinner";
 import PropTypes from "prop-types";
 
 const ProjectBoard = ({
   errors,
   backlog,
+  utils,
   clearBacklog,
   clearErrors,
   getBacklog,
@@ -78,7 +79,6 @@ const ProjectBoard = ({
   };
 
   let backlogBoard = projectBoardAlgo(localErrors, localProjectTasks);
-
   return (
     <div className='container'>
       {showAddButton && (
@@ -93,7 +93,7 @@ const ProjectBoard = ({
           <hr />
         </Fragment>
       )}
-      {backlogBoard}
+      {utils.isLoading ? <Spinner /> : backlogBoard}
     </div>
   );
 };
@@ -104,11 +104,13 @@ ProjectBoard.propTypes = {
   errors: PropTypes.object.isRequired,
   clearErrors: PropTypes.func.isRequired,
   clearBacklog: PropTypes.func.isRequired,
+  utils: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   backlog: state.backlog,
   errors: state.errors,
+  utils: state.utils,
 });
 
 export default connect(mapStateToProps, {

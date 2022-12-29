@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { registerUser } from "../../actions/SecurityActions";
 
 import { connect } from "react-redux";
@@ -20,9 +20,9 @@ const Register = ({
     confirmPassword: "",
   });
 
-  const [localErrors, setLocalErrors] = useState({});
-
   const navigate = useNavigate();
+
+  const [localErrors, setLocalErrors] = useState({});
 
   const { username, fullname, password, confirmPassword } = user;
 
@@ -32,12 +32,6 @@ const Register = ({
       clearErrors();
     }
   }, [errors]);
-
-  useEffect(() => {
-    if (validToken) {
-      navigate("/dashboard");
-    }
-  }, [validToken]);
 
   const onChange = (e) => {
     setUser({
@@ -51,6 +45,9 @@ const Register = ({
     registerUser(user, navigate);
   };
 
+  if (validToken) {
+    return <Navigate to='/dashboard' />;
+  }
   return (
     <div className='register'>
       <div className='container'>

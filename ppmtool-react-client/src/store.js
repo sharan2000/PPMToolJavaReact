@@ -4,6 +4,7 @@ import BacklogReducer from "./reducers/BacklogReducer";
 import ErrorReducer from "./reducers/ErrorReducer";
 import ProjectReducer from "./reducers/ProjectReducer";
 import SecurityReducer from "./reducers/SecurityReducer";
+import UtilsReducer from "./reducers/UtilsReducer";
 
 const reducer = {
   // add all reducers here
@@ -11,6 +12,7 @@ const reducer = {
   backlog: BacklogReducer,
   errors: ErrorReducer,
   security: SecurityReducer,
+  utils: UtilsReducer,
 };
 
 const middleware = [thunk];
